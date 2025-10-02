@@ -1,0 +1,21 @@
+{
+  "name": "p_solicitante",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.8.6",
+    "@inquirer/select": "^4.3.4",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.1",
+    "figlet": "^1.9.3",
+    "fs": "^0.0.1-security",
+    "zod": "^4.1.11"
+  }
+}

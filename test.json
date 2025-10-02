@@ -1,0 +1,17 @@
+[
+  {
+    "operation": "reserve",
+    "book_id": "0199a6b2-b9d0-7249-a8aa-b966de5cce79",
+    "user_id": "0199a6b2-effe-768d-b93f-36dd4660b100"
+  },
+  {
+    "operation": "renew",
+    "copy_id": "0199a6b2-b9d0-7429-90fc-f0d2c65016ea",
+    "user_id": "0199a6b2-effe-768d-b93f-36dd4660b100"
+  },
+  {
+    "operation": "renew",
+    "book_id": "0199a6b2-b9d0-7429-90fc-f0d2c65016ea",
+    "user_id": "0199a6b2-effe-768d-b93f-36dd4660b100"
+  }
+]

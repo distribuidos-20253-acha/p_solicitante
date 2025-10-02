@@ -1,0 +1,29 @@
+import { program } from "commander";
+import friendly from "./src/friendly";
+import inputExecution from "./src/inputExecution";
+import { config } from "./config";
+
+program
+  .option('-i, --input <file>')
+  .option('-f, --friendly')
+  .option('-v, --verbose')
+  .requiredOption('-h, --host <host>')
+  .requiredOption('-p, --port <port>')
+
+program.showHelpAfterError(true)
+program.parse()
+
+const {
+  host: HOST, port: PORT, input: INPUT_FILE, friendly: IS_FRIENDLY, verbose: VERBOSE
+} = program.opts()
+
+if (IS_FRIENDLY && INPUT_FILE) {
+  console.error("You can use this program only friendly or with an input file, not the two options at the same.")
+}
+
+config.VERBOSE = VERBOSE
+
+if (IS_FRIENDLY) friendly()
+else inputExecution({
+  INPUT_FILE
+})
