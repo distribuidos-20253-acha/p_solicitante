@@ -7,14 +7,12 @@ program
   .option('-i, --input <file>')
   .option('-f, --friendly')
   .option('-v, --verbose')
-  .requiredOption('-h, --host <host>')
-  .requiredOption('-p, --port <port>')
 
 program.showHelpAfterError(true)
 program.parse()
 
 const {
-  host: HOST, port: PORT, input: INPUT_FILE, friendly: IS_FRIENDLY, verbose: VERBOSE
+  INPUT_FILE, friendly: IS_FRIENDLY, verbose: VERBOSE
 } = program.opts()
 
 if (IS_FRIENDLY && INPUT_FILE) {
@@ -25,7 +23,5 @@ config.VERBOSE = VERBOSE
 
 if (IS_FRIENDLY) friendly()
 else inputExecution({
-  INPUT_FILE,
-  PORT,
-  HOST
+  INPUT_FILE
 })

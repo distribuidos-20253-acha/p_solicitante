@@ -10,16 +10,12 @@ import ClientZeroMQAdapter from "../net/adapters/ClientZeroMQAdapter.ts"
 
 export default async ({
   INPUT_FILE,
-  PORT,
-  HOST
 }: {
   INPUT_FILE: string,
-  PORT: string,
-  HOST: string
 }) => {
   const net: NetAdapter = new ClientZeroMQAdapter({
-    host: HOST,
-    port: PORT
+    host: import.meta.env.LOAD_MANAGER_HOST!,
+    port: import.meta.env.LOAD_MANAGER_PORT!
   })
 
   try {
