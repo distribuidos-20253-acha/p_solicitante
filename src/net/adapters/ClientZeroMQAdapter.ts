@@ -1,22 +1,20 @@
 // ODIO ZEROMQ <3
 
-import type { Response } from "../NetAdapter.ts";
+import type { Input, Response } from "../NetAdapter.ts";
 import type NetAdapter from "../NetAdapter.ts";
 
 import * as zmq from "zeromq"
+import logVerbose from "../../utils/logVerbose.ts";
 
-export default class ZeroMQAdapter implements NetAdapter {
+export default class ClientZeroMQAdapter implements NetAdapter {
   private host: string;
   private port: string;
-  private sock: zmq.Publisher;
+  private sock: zmq.Request;
 
   constructor({
     host, port
   }: { host: string, port: string }) {
-    this.sock = new zmq.Publisher()
-    this.sock.linger = 500
-    this.sock.sendHighWaterMark = 1000
-    this.sock.conflate = false
+    this.sock = new zmq.Request()
     this.port = port;
     this.host = host;
   }
@@ -25,7 +23,8 @@ export default class ZeroMQAdapter implements NetAdapter {
 
     return new Promise(async (resolve, reject) => {
       try {
-        this.sock.bind(`${this.host}:${this.port}`)
+        this.sock.connect(`${this.host}:${this.port}`)
+        logVerbose("Connected to " + `${this.host}:${this.port}`)
         setTimeout(() => {
           resolve(true)
         }, 500);
@@ -35,7 +34,9 @@ export default class ZeroMQAdapter implements NetAdapter {
     })
   }
 
-  sendRenew(): Promise<Response> {
+  sendRenew(context: {
+      body: Input
+    }): Promise<Response> {
     return new Promise((resolve, reject) => {
 
       resolve({
@@ -44,7 +45,9 @@ export default class ZeroMQAdapter implements NetAdapter {
     })
   }
 
-  sendReserve(): Promise<Response> {
+  sendReserve(context: {
+    body: Input
+  }): Promise<Response> {
     return new Promise((resolve, reject) => {
 
       resolve({
@@ -53,13 +56,14 @@ export default class ZeroMQAdapter implements NetAdapter {
     })
   }
 
-  async sendReturn(): Promise<Response> {
+  async sendReturn(context: {
+    body: Input
+  }): Promise<Response> {
 
     return new Promise(async (resolve, reject) => {
-      while (!(await this.sock.writable)) {
-        await new Promise(r => setTimeout(r, 10));
-      }
-      await this.sock.send(["return", `${new Date()}`])
+      await this.sock.send(JSON.stringify(context.body))
+      const [result] = await this.sock.receive()
+
       setTimeout(() => {
         resolve({ ok: true });
       }, 500);

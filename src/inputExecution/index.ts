@@ -3,8 +3,9 @@ import showFigletTitle from "../shared/showFigletTitle.ts"
 import InputSchema from "./InputSchema.ts"
 import colors from "chalk"
 import { config } from "../../config.ts"
-import ZeroMQAdapter from "../net/adapters/ZeroMQAdapter.ts"
 import type NetAdapter from "../net/NetAdapter.ts"
+import logVerbose from "../utils/logVerbose.ts"
+import ClientZeroMQAdapter from "../net/adapters/ClientZeroMQAdapter.ts"
 
 
 export default async ({
@@ -16,14 +17,14 @@ export default async ({
   PORT: string,
   HOST: string
 }) => {
-  const net: NetAdapter = new ZeroMQAdapter({
+  const net: NetAdapter = new ClientZeroMQAdapter({
     host: HOST,
     port: PORT
   })
 
   try {
     await net.init();
-  } catch(err) {
+  } catch (err) {
     console.error(err)
   }
 
@@ -57,13 +58,15 @@ export default async ({
       process.stdout.write(`${colors.cyan(op.operation)} > ${colors.yellow('user:')} ${op.user_id} > ${colors.yellow(`${op.copy_id ? "copy_id" : "book_id"}:`)} ${op.copy_id ?? op.book_id}`);
       process.stdout.write(`${colors.cyan(" ...")}`);
 
-      await net.sendReturn()
+      await net.sendReturn({
+        body: op
+      })
 
       process.stdout.write(colors.green('\x1b[4D done\n'));
 
     } catch (err) {
-      console.error("Invalid operation, ignoring it")
-      if (config.VERBOSE) console.log(colors.blue("[VERBOSE]", err))
+      console.error(colors.red("Invalid operation, ignoring it"))
+      logVerbose(err)
     }
 
   }

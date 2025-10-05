@@ -26,7 +26,13 @@ export const inputSchema = z.object({
 export default interface NetAdapter {
 
   init(): Promise<boolean>
-  sendRenew(): Promise<Response>;
-  sendReturn(): Promise<Response>;
-  sendReserve(): Promise<Response>;
+  sendRenew(context: {
+    body: Input
+  }): Promise<Response>;
+  sendReturn(context: {
+    body: Input
+  }): Promise<Response>;
+  sendReserve(context: {
+    body: Input
+  }): Promise<Response>;
 }
