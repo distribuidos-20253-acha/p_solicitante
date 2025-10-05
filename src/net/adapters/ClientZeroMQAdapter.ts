@@ -35,8 +35,8 @@ export default class ClientZeroMQAdapter implements NetAdapter {
   }
 
   sendRenew(context: {
-      body: Input
-    }): Promise<Response> {
+    body: Input
+  }): Promise<Response> {
     return new Promise((resolve, reject) => {
 
       resolve({
@@ -65,7 +65,7 @@ export default class ClientZeroMQAdapter implements NetAdapter {
       const [result] = await this.sock.receive()
 
       setTimeout(() => {
-        resolve({ ok: true });
+        resolve({ ok: true, body: result });
       }, 500);
     })
   }
