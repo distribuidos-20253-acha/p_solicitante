@@ -12,11 +12,16 @@ program.showHelpAfterError(true)
 program.parse()
 
 const {
-  INPUT_FILE, friendly: IS_FRIENDLY, verbose: VERBOSE
+  input: INPUT_FILE, friendly: IS_FRIENDLY, verbose: VERBOSE
 } = program.opts()
 
 if (IS_FRIENDLY && INPUT_FILE) {
   console.error("You can use this program only friendly or with an input file, not the two options at the same.")
+  program.help()
+}
+if (!IS_FRIENDLY && !INPUT_FILE) {
+  console.error("Select at least one option")
+  program.help()
 }
 
 config.VERBOSE = VERBOSE

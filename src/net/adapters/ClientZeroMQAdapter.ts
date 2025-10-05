@@ -34,39 +34,35 @@ export default class ClientZeroMQAdapter implements NetAdapter {
     })
   }
 
-  sendRenew(context: {
+  private resendBody(context: {
     body: Input
   }): Promise<Response> {
-    return new Promise((resolve, reject) => {
-
-      resolve({
-        ok: true
-      })
-    })
-  }
-
-  sendReserve(context: {
-    body: Input
-  }): Promise<Response> {
-    return new Promise((resolve, reject) => {
-
-      resolve({
-        ok: true
-      })
-    })
-  }
-
-  async sendReturn(context: {
-    body: Input
-  }): Promise<Response> {
-
     return new Promise(async (resolve, reject) => {
       await this.sock.send(JSON.stringify(context.body))
       const [result] = await this.sock.receive()
 
       setTimeout(() => {
-        resolve({ ok: true, body: result });
+        resolve({ ok: true, body: result?.toString() ?? "" });
       }, 500);
+
     })
+  }
+
+  sendRenew(context: {
+    body: Input
+  }): Promise<Response> {
+    return this.resendBody(context)
+  }
+
+  sendReserve(context: {
+    body: Input
+  }): Promise<Response> {
+    return this.resendBody(context)
+  }
+
+  async sendReturn(context: {
+    body: Input
+  }): Promise<Response> {
+    return this.resendBody(context)
   }
 }

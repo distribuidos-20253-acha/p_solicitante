@@ -6,6 +6,7 @@ import { config } from "../../config.ts"
 import type NetAdapter from "../net/NetAdapter.ts"
 import logVerbose from "../utils/logVerbose.ts"
 import ClientZeroMQAdapter from "../net/adapters/ClientZeroMQAdapter.ts"
+import 'dotenv/config'
 
 
 export default async ({
@@ -13,9 +14,10 @@ export default async ({
 }: {
   INPUT_FILE: string,
 }) => {
+
   const net: NetAdapter = new ClientZeroMQAdapter({
-    host: import.meta.env.LOAD_MANAGER_HOST!,
-    port: import.meta.env.LOAD_MANAGER_PORT!
+    host: process.env?.LOAD_MANAGER_HOST!,
+    port: process.env?.LOAD_MANAGER_PORT!
   })
 
   try {
@@ -54,11 +56,13 @@ export default async ({
       process.stdout.write(`${colors.cyan(op.operation)} > ${colors.yellow('user:')} ${op.user_id} > ${colors.yellow(`${op.copy_id ? "copy_id" : "book_id"}:`)} ${op.copy_id ?? op.book_id}`);
       process.stdout.write(`${colors.cyan(" ...")}`);
 
-      await net.sendReturn({
+      const req = await net.sendReturn({
         body: op
       })
 
       process.stdout.write(colors.green('\x1b[4D done\n'));
+
+      console.log(JSON.stringify(req, null, 2))
 
     } catch (err) {
       console.error(colors.red("Invalid operation, ignoring it"))
