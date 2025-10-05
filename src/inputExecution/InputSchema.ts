@@ -1,15 +1,4 @@
-import z from "zod"
-
-const inputSchema = z.object({
-  operation: z.enum([
-    "renew",
-    "return",
-    "reserve"
-  ]),
-  user_id: z.uuidv7(),
-  copy_id: z.uuidv7().optional(),
-  book_id: z.uuidv7().optional()
-})
+import { inputSchema } from "../net/NetAdapter.ts"
 
 const isValid = (x: Object): Promise<boolean> => {
 

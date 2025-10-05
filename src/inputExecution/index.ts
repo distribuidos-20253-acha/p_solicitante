@@ -1,14 +1,32 @@
 import { readFile } from "fs/promises"
-import showFigletTitle from "../shared/showFigletTitle"
-import InputSchema from "./InputSchema"
+import showFigletTitle from "../shared/showFigletTitle.ts"
+import InputSchema from "./InputSchema.ts"
 import colors from "chalk"
-import { config } from "../../config"
+import { config } from "../../config.ts"
+import ZeroMQAdapter from "../net/adapters/ZeroMQAdapter.ts"
+import type NetAdapter from "../net/NetAdapter.ts"
+
 
 export default async ({
-  INPUT_FILE
+  INPUT_FILE,
+  PORT,
+  HOST
 }: {
-  INPUT_FILE: string
+  INPUT_FILE: string,
+  PORT: string,
+  HOST: string
 }) => {
+  const net: NetAdapter = new ZeroMQAdapter({
+    host: HOST,
+    port: PORT
+  })
+
+  try {
+    await net.init();
+  } catch(err) {
+    console.error(err)
+  }
+
   showFigletTitle()
 
   const file_info = await readFile(INPUT_FILE, {
@@ -36,8 +54,13 @@ export default async ({
       if (!await InputSchema.isValid(operation)) throw new Error("Invalid Operation")
       const op = (await InputSchema.inputSchema.safeParseAsync(operation)).data!;
 
+      process.stdout.write(`${colors.cyan(op.operation)} > ${colors.yellow('user:')} ${op.user_id} > ${colors.yellow(`${op.copy_id ? "copy_id" : "book_id"}:`)} ${op.copy_id ?? op.book_id}`);
+      process.stdout.write(`${colors.cyan(" ...")}`);
 
-      console.log(`${colors.cyan(op.operation)} > ${colors.yellow('user:')} ${op.user_id} > ${colors.yellow(`${op.copy_id ? "copy_id" : "book_id"}:`)} ${op.copy_id ?? op.book_id}`)
+      await net.sendReturn()
+
+      process.stdout.write(colors.green('\x1b[4D done\n'));
+
     } catch (err) {
       console.error("Invalid operation, ignoring it")
       if (config.VERBOSE) console.log(colors.blue("[VERBOSE]", err))
