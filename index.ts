@@ -2,6 +2,7 @@ import { program } from "commander";
 import friendly from "./src/friendly/index.ts";
 import inputExecution from "./src/inputExecution/index.ts";
 import { config } from "./config.ts";
+import showFigletTitle from "./src/shared/showFigletTitle.ts";
 
 program
   .option('-i, --input <file>')
@@ -25,6 +26,8 @@ if (!IS_FRIENDLY && !INPUT_FILE) {
 }
 
 config.VERBOSE = VERBOSE
+
+showFigletTitle()
 
 if (IS_FRIENDLY) friendly()
 else inputExecution({

@@ -2,7 +2,6 @@ import { readFile } from "fs/promises"
 import showFigletTitle from "../shared/showFigletTitle.ts"
 import InputSchema from "./InputSchema.ts"
 import colors from "chalk"
-import { config } from "../../config.ts"
 import type NetAdapter from "../net/NetAdapter.ts"
 import logVerbose from "../utils/logVerbose.ts"
 import ClientZeroMQAdapter from "../net/adapters/ClientZeroMQAdapter.ts"
@@ -25,8 +24,6 @@ export default async ({
   } catch (err) {
     console.error(err)
   }
-
-  showFigletTitle()
 
   const file_info = await readFile(INPUT_FILE, {
     encoding: "utf-8"
