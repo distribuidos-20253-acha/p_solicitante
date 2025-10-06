@@ -13,5 +13,5 @@ RUN npm install --production
 # Copy the rest of the project files
 COPY . .
 
-# Start the app
-CMD ["npm", "start"]
+# Esto hace que no sea un servicio, sino una app de docker
+ENTRYPOINT ["node", "index.js"]
