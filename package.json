@@ -19,5 +19,8 @@
     "fs": "^0.0.1-security",
     "zeromq": "^6.5.0",
     "zod": "^4.1.11"
+  },
+  "scripts": {
+    "start": "node index.ts"
   }
 }
