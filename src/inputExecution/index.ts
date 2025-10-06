@@ -53,13 +53,34 @@ export default async ({
       process.stdout.write(`${colors.cyan(op.operation)} > ${colors.yellow('user:')} ${op.user_id} > ${colors.yellow(`${op.copy_id ? "copy_id" : "book_id"}:`)} ${op.copy_id ?? op.book_id}`);
       process.stdout.write(`${colors.cyan(" ...")}`);
 
-      const req = await net.sendReturn({
-        body: op
-      })
+      let req;
+      const time = new Date().getTime()
+
+      switch (op.operation) {
+        case "renew":
+          req = net.sendRenew({
+            body: op
+          })
+          break;
+        case "return":
+          req = net.sendReturn({
+            body: op
+          })
+          break;
+        case "reserve":
+          req = net.sendReserve({
+            body: op
+          })
+          break;
+
+      }
+
+      const data = await req;
 
       process.stdout.write(colors.green('\x1b[4D done\n'));
 
-      console.log(JSON.stringify(req, null, 2))
+      logVerbose(`Request time: ${new Date().getTime() - time}ms`)
+      console.log(JSON.stringify(data, null, 2))
 
     } catch (err) {
       console.error(colors.red("Invalid operation, ignoring it"))

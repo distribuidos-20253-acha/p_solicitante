@@ -42,7 +42,6 @@ export default class ClientZeroMQAdapter implements NetAdapter {
       const [result] = await this.sock.receive()
 
       resolve({ ok: true, body: result?.toString() ?? "" });
-
     })
   }
 
