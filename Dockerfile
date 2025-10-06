@@ -14,4 +14,4 @@ RUN npm install --production
 COPY . .
 
 # Esto hace que no sea un servicio, sino una app de docker
-ENTRYPOINT ["node", "index.js"]
+ENTRYPOINT ["node", "index.ts"]
