@@ -1,14 +1,14 @@
-import type { Input, Response } from "../schemas/InputSchema";
+import type { BibInput, BibResponse } from "../schemas/InputSchema";
 
 export default interface NetAdapter {
   init(): Promise<boolean>
   sendRenew(context: {
-    body: Input
-  }): Promise<Response>;
+    body: BibInput
+  }): Promise<BibResponse>;
   sendReturn(context: {
-    body: Input
-  }): Promise<Response>;
+    body: BibInput
+  }): Promise<BibResponse>;
   sendReserve(context: {
-    body: Input
-  }): Promise<Response>;
+    body: BibInput
+  }): Promise<BibResponse>;
 }

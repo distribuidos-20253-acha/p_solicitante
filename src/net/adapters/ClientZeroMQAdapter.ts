@@ -4,7 +4,7 @@ import type NetAdapter from "../NetAdapter.ts";
 
 import * as zmq from "zeromq"
 import logVerbose from "../../utils/logVerbose.ts";
-import type { Input, Response } from "../../schemas/InputSchema.ts";
+import type { BibInput, BibResponse } from "../../schemas/InputSchema.ts";
 
 export default class ClientZeroMQAdapter implements NetAdapter {
   private host: string;
@@ -35,8 +35,8 @@ export default class ClientZeroMQAdapter implements NetAdapter {
   }
 
   private resendBody(context: {
-    body: Input
-  }): Promise<Response> {
+    body: BibInput
+  }): Promise<BibResponse> {
     return new Promise(async (resolve, reject) => {
       await this.sock.send(JSON.stringify(context.body))
       const [result] = await this.sock.receive()
@@ -46,20 +46,20 @@ export default class ClientZeroMQAdapter implements NetAdapter {
   }
 
   sendRenew(context: {
-    body: Input
-  }): Promise<Response> {
+    body: BibInput
+  }): Promise<BibResponse> {
     return this.resendBody(context)
   }
 
   sendReserve(context: {
-    body: Input
-  }): Promise<Response> {
+    body: BibInput
+  }): Promise<BibResponse> {
     return this.resendBody(context)
   }
 
   async sendReturn(context: {
-    body: Input
-  }): Promise<Response> {
+    body: BibInput
+  }): Promise<BibResponse> {
     return this.resendBody(context)
   }
 }

@@ -1,11 +1,11 @@
 import z from "zod";
 
-export interface Response {
+export interface BibResponse {
   ok: boolean,
   body?: Object
 }
 
-export interface Input {
+export interface BibInput {
   operation: "renew" | "return" | "reserve",
   user_id: string,
   copy_id?: string,
