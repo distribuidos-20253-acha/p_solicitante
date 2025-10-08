@@ -1,11 +1,10 @@
 import { readFile } from "fs/promises"
-import showFigletTitle from "../shared/showFigletTitle.ts"
-import InputSchema from "./InputSchema.ts"
 import colors from "chalk"
 import type NetAdapter from "../net/NetAdapter.ts"
 import logVerbose from "../utils/logVerbose.ts"
 import ClientZeroMQAdapter from "../net/adapters/ClientZeroMQAdapter.ts"
 import 'dotenv/config'
+import { inputSchema, isValid } from "../schemas/InputSchema.ts"
 
 
 export default async ({
@@ -47,8 +46,8 @@ export default async ({
   for (let operation of data) {
 
     try {
-      if (!await InputSchema.isValid(operation)) throw new Error("Invalid Operation")
-      const op = (await InputSchema.inputSchema.safeParseAsync(operation)).data!;
+      if (!await isValid(operation)) throw new Error("Invalid Operation")
+      const op = (await inputSchema.safeParseAsync(operation)).data!;
 
       process.stdout.write(`${colors.cyan(op.operation)} > ${colors.yellow('user:')} ${op.user_id} > ${colors.yellow(`${op.copy_id ? "copy_id" : "book_id"}:`)} ${op.copy_id ?? op.book_id}`);
       process.stdout.write(`${colors.cyan(" ...")}`);
