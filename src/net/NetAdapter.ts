@@ -20,7 +20,20 @@ export const inputSchema = z.object({
   ]),
   user_id: z.uuidv7(),
   copy_id: z.uuidv7().optional(),
-  book_id: z.uuidv7().optional()
+  book_id: z.uuidv7().optional(),
+
+  duration: z.string()
+    .regex(/^\d+[dw]$/, "Formato inválido. Usa número + d o w")
+    .refine((val) => {
+      const num = parseInt(val.slice(0, -1), 10);
+      const unit = val.slice(-1)
+
+      if (unit == 'd' && num <= 14) return true;
+      if (unit == 'w' && num <= 2) return true;
+
+      return false;
+    }, "Duración máxima es 2 semanas").optional(),
+  location: z.string().optional()
 })
 
 export default interface NetAdapter {

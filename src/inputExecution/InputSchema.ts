@@ -16,8 +16,8 @@ const isValid = (x: Object): Promise<boolean> => {
     if (data.operation == "return" && !data.copy_id)
       reject("Operation return requires copy_id")
 
-    if (data.operation == "reserve" && !data.book_id)
-      reject("Operation reserv requires book_id")
+    if (data.operation == "reserve" && (!data.book_id || !data.duration || !data.location))
+      reject("Operation reserv requires book_id, duration and location")
 
 
     resolve(true)
