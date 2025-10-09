@@ -44,6 +44,7 @@ export default async () => {
 
         break;
       case "search":
+        throw new Error("Not implemented yet :(")
         const answer = await search({
           message: "Escribe el titulo de un libro",
           source: async (input, { signal }) => {

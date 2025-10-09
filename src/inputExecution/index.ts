@@ -45,9 +45,12 @@ export default async ({
 
   for (let operation of data) {
 
+
     try {
       if (!await isValid(operation)) throw new Error("Invalid Operation")
       const op = (await inputSchema.safeParseAsync(operation)).data!;
+      logVerbose("Intentando enviar")
+      logVerbose(JSON.stringify(op, null, 2))
 
       process.stdout.write(`${colors.cyan(op.operation)} > ${colors.yellow('user:')} ${op.user_id} > ${colors.yellow(`${op.copy_id ? "copy_id" : "book_id"}:`)} ${op.copy_id ?? op.book_id}`);
       process.stdout.write(`${colors.cyan(" ...")}`);
@@ -79,7 +82,9 @@ export default async ({
       process.stdout.write(colors.green('\x1b[4D done\n'));
 
       logVerbose(`Request time: ${new Date().getTime() - time}ms`)
-      console.log(JSON.stringify(data, null, 2))
+
+      logVerbose("Recibido:")
+      logVerbose(JSON.stringify(data, null, 2))
 
     } catch (err) {
       console.error(colors.red("Invalid operation, ignoring it"))
