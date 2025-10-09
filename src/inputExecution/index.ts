@@ -45,7 +45,6 @@ export default async ({
 
   for (let operation of data) {
 
-
     try {
       if (!await isValid(operation)) throw new Error("Invalid Operation")
       const op = (await inputSchema.safeParseAsync(operation)).data!;
