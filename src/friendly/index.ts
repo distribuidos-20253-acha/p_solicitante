@@ -3,6 +3,7 @@ import showFigletTitle from "../shared/showFigletTitle.ts"
 import { existsSync } from "fs"
 import inputExecution from "../inputExecution/index.ts"
 import "dotenv/config"
+import { writeLog } from "../utils/logVerbose.ts"
 export default async () => {
   showFigletTitle()
 
@@ -23,7 +24,8 @@ export default async () => {
       ]
     })
 
-
+    await writeLog(`Friendly - User selected option: ${option}`)
+    
     switch (option) {
       case "file":
         console.clear()
@@ -32,11 +34,12 @@ export default async () => {
           required: true,
           validate: async (v) => {
             const doFileExists = existsSync(v)
-
+            
             if (!doFileExists) return false
             return true
           }
         })
+        await writeLog(`Friendly - Filename: ${filename}`)
 
         await inputExecution({ INPUT_FILE: filename })
 

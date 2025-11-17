@@ -3,7 +3,7 @@
 import type NetAdapter from "../NetAdapter.ts";
 
 import * as zmq from "zeromq"
-import logVerbose from "../../utils/logVerbose.ts";
+import logVerbose, { writeLog, writeLogSync } from "../../utils/logVerbose.ts";
 import type { BibInput, BibResponse } from "../../schemas/InputSchema.ts";
 
 export default class ClientZeroMQAdapter implements NetAdapter {
@@ -17,6 +17,8 @@ export default class ClientZeroMQAdapter implements NetAdapter {
     this.sock = new zmq.Request()
     this.port = port;
     this.host = host;
+
+    writeLogSync(`ClientZeroMQAdapter Instantiated with params [host=${host}, port=${port}]`)
   }
 
   init(): Promise<boolean> {
@@ -57,7 +59,7 @@ export default class ClientZeroMQAdapter implements NetAdapter {
     return this.resendBody(context)
   }
 
-  async sendReturn(context: {
+  sendReturn(context: {
     body: BibInput
   }): Promise<BibResponse> {
     return this.resendBody(context)

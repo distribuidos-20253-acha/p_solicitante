@@ -3,6 +3,8 @@ import friendly from "./src/friendly/index.ts";
 import inputExecution from "./src/inputExecution/index.ts";
 import { config } from "./config.ts";
 import showFigletTitle from "./src/shared/showFigletTitle.ts";
+import { writeLog } from "./src/utils/logVerbose.ts";
+import figlet from "figlet";
 
 program
   .option('-i, --input <file>')
@@ -28,8 +30,19 @@ if (!IS_FRIENDLY && !INPUT_FILE) {
 config.VERBOSE = VERBOSE
 
 showFigletTitle()
+await writeLog(figlet.textSync("BIB_DB"), true);
+await writeLog(program.opts())
 
-if (IS_FRIENDLY) friendly()
-else inputExecution({
-  INPUT_FILE
-})
+if (IS_FRIENDLY) {
+  await writeLog("Friendly Mode")
+  await writeLog("")
+  friendly()
+}
+else {
+  await writeLog("Input Mode")
+  await writeLog(`Filename: ${INPUT_FILE}`)
+  await writeLog("")
+  inputExecution({
+    INPUT_FILE
+  })
+}
