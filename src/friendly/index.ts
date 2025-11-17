@@ -1,9 +1,8 @@
 import { input, search, select } from "@inquirer/prompts"
-import showFigletTitle from "../shared/showFigletTitle.ts"
 import { existsSync } from "fs"
 import inputExecution from "../inputExecution/index.ts"
 import "dotenv/config"
-import { writeLog } from "../utils/logVerbose.ts"
+import { writeLog, showFigletTitle } from "@acha/distribuidos"
 export default async () => {
   showFigletTitle()
 

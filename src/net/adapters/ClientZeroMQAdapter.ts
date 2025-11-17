@@ -3,8 +3,8 @@
 import type NetAdapter from "../NetAdapter.ts";
 
 import * as zmq from "zeromq"
-import logVerbose, { writeLog, writeLogSync } from "../../utils/logVerbose.ts";
-import type { BibInput, BibResponse } from "../../schemas/InputSchema.ts";
+import { writeLogSync, logVerbose } from "@acha/distribuidos"
+import type { BibInput, BibResponse } from "@acha/distribuidos/src/schemas/InputSchema.ts";
 
 export default class ClientZeroMQAdapter implements NetAdapter {
   private host: string;

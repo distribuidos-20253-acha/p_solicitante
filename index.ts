@@ -2,9 +2,8 @@ import { program } from "commander";
 import friendly from "./src/friendly/index.ts";
 import inputExecution from "./src/inputExecution/index.ts";
 import { config } from "./config.ts";
-import showFigletTitle from "./src/shared/showFigletTitle.ts";
-import { writeLog } from "./src/utils/logVerbose.ts";
 import figlet from "figlet";
+import { writeLog, showFigletTitle } from "@acha/distribuidos"
 
 program
   .option('-i, --input <file>')

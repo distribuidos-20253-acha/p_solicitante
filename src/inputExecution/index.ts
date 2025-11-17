@@ -1,10 +1,10 @@
 import { readFile } from "fs/promises"
 import colors from "chalk"
 import type NetAdapter from "../net/NetAdapter.ts"
-import logVerbose, { writeLog } from "../utils/logVerbose.ts"
+import { writeLog, logVerbose } from "@acha/distribuidos"
 import ClientZeroMQAdapter from "../net/adapters/ClientZeroMQAdapter.ts"
 import 'dotenv/config'
-import { inputSchema, isValid } from "../schemas/InputSchema.ts"
+import { inputSchema, isValid } from "@acha/distribuidos/schemas/InputSchema"
 
 
 export default async ({
