@@ -4,7 +4,7 @@ import inputExecution from "../inputExecution/index.ts"
 import "dotenv/config"
 import { writeLog, showFigletTitle } from "@acha/distribuidos"
 export default async () => {
-  showFigletTitle()
+  showFigletTitle("bib_db")
 
   while (1) {
     const option = await select({

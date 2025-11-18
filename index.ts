@@ -1,9 +1,9 @@
 import { program } from "commander";
 import friendly from "./src/friendly/index.ts";
 import inputExecution from "./src/inputExecution/index.ts";
-import { config } from "./config.ts";
-import figlet from "figlet";
-import { writeLog, showFigletTitle } from "@acha/distribuidos"
+import { writeLog, showFigletTitle, Config } from "@acha/distribuidos"
+const config = Config.getInstance();
+config.setVersion("0.1.15")
 
 program
   .option('-i, --input <file>')
@@ -26,11 +26,9 @@ if (!IS_FRIENDLY && !INPUT_FILE) {
   program.help()
 }
 
-config.VERBOSE = VERBOSE
+config.setVerbose(Boolean(VERBOSE));
 
-showFigletTitle()
-await writeLog(figlet.textSync("BIB_DB"), true);
-await writeLog(program.opts())
+showFigletTitle("bib_db")
 
 if (IS_FRIENDLY) {
   await writeLog("Friendly Mode")
