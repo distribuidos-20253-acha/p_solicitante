@@ -43,7 +43,12 @@ export default class ClientZeroMQAdapter implements NetAdapter {
       await this.sock.send(JSON.stringify(context.body))
       const [result] = await this.sock.receive()
 
-      resolve({ ok: true, body: result?.toString() ?? "" });
+      if (!result) {
+        writeLogSync("RESULT EMPTY")
+        throw new Error("Result empty!")
+      }
+
+      resolve(JSON.parse(result?.toString()))
     })
   }
 

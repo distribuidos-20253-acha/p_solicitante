@@ -3,6 +3,8 @@ import { existsSync } from "fs"
 import inputExecution from "../inputExecution/index.ts"
 import "dotenv/config"
 import { writeLog, showFigletTitle } from "@acha/distribuidos"
+import Table from "cli-table3";
+
 export default async () => {
   showFigletTitle("bib_db")
 
@@ -24,7 +26,7 @@ export default async () => {
     })
 
     await writeLog(`Friendly - User selected option: ${option}`)
-    
+
     switch (option) {
       case "file":
         console.clear()
@@ -33,7 +35,7 @@ export default async () => {
           required: true,
           validate: async (v) => {
             const doFileExists = existsSync(v)
-            
+
             if (!doFileExists) return false
             return true
           }
@@ -46,7 +48,7 @@ export default async () => {
 
         break;
       case "search":
-        throw new Error("Not implemented yet :(")
+        // throw new Error("Not implemented yet :(")
         const answer = await search({
           message: "Escribe el titulo de un libro",
           source: async (input, { signal }) => {
@@ -57,7 +59,7 @@ export default async () => {
             })
 
             if (!response.ok) {
-              throw new Error("Invalid query")
+              throw new Error(`Invalid query ${response.status}`)
             }
 
             const data = await response.json() as any[]
@@ -65,12 +67,37 @@ export default async () => {
             return data.map((book) => ({
               name: book.book_name,
               value: JSON.stringify(book),
-              description: book.book_description
+              description: `${book.book_description} | ${book?.book_authors}`,
             }))
           }
         })
+        const table = new Table({
+          wordWrap: true,
+          colWidths: [38, 20, 18, 12, 14, 20],
+          head: [
+            "book_id",
+            "book_name",
+            "total_book_count",
+            "book_count",
+            "book_authors",
+            "book_description"
+          ]
 
-        console.table(JSON.parse(answer))
+        })
+
+        const row = JSON.parse(answer)
+
+        table.push([
+          row.book_id,
+          row.book_name,
+          row.total_book_count,
+          row.book_count,
+          row.book_authors,
+          row.book_description
+        ])
+
+        console.log(table.toString());
+
     }
   }
 }

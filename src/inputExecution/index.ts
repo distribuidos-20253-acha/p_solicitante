@@ -102,6 +102,7 @@ export default async ({
         await writeLog(data)
 
       } catch (err) {
+        await writeLog(`${index} - Invalid Operation`)
         console.error(colors.red("Invalid operation, ignoring it"))
         logVerbose(err)
       }
