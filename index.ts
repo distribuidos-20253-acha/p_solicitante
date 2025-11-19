@@ -1,7 +1,7 @@
 import { program } from "commander";
 import friendly from "./src/friendly/index.ts";
-import inputExecution from "./src/inputExecution/index.ts";
 import { writeLog, showFigletTitle, Config } from "@acha/distribuidos"
+import readOperationsFile from "./src/inputExecution/readOperationsFile.ts";
 const config = Config.getInstance();
 config.setVersion("0.1.15")
 
@@ -39,7 +39,7 @@ else {
   await writeLog("Input Mode")
   await writeLog(`Filename: ${INPUT_FILE}`)
   await writeLog("")
-  inputExecution({
+  await readOperationsFile({
     INPUT_FILE
   })
 }
