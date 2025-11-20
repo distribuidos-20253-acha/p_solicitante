@@ -10,7 +10,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@acha/distribuidos": "../acha",
+    "@acha/distribuidos": "../acha-lib",
     "@inquirer/prompts": "^7.10.1",
     "@inquirer/search": "^3.2.2",
     "@inquirer/select": "^4.4.2",
