@@ -37,6 +37,8 @@ export default async ({
     await writeLog(`Reading ${data.length} operations...`)
     for (let [index, operation] of data.entries()) {
       try {
+        //@ts-expect-error
+        operation.location = import.meta.env.SEDE
         let op: BibOperation;
 
         try {
@@ -57,6 +59,13 @@ export default async ({
             console.log(colors.yellow("No se pudo realizar la reserva, error:"), colors.red(data.body))
           }
         }
+        if (op.getOperation() == OperationType.RENEW) {
+          if (data.ok) {
+            console.log(colors.yellow(`Renovación realizada, nueva Fecha: ${new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7)).toLocaleDateString("es-CO") } `))
+          } else {
+            console.log(colors.yellow("No se pudo realizar la renovación, error:"), colors.red(data.body))
+          }
+        }
 
       } catch(err) {
         await writeLog("Error sending operation")
@@ -64,7 +73,7 @@ export default async ({
       }
     }
   } catch {
-    await writeLog(`Error Trying to open file ${INPUT_FILE}`)
+    await writeLog(`Error Trying to open file ${ INPUT_FILE } `)
   }
 
 }

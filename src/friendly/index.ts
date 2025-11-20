@@ -156,14 +156,22 @@ export default async () => {
 
               const op = await OperationFactory.parseOperation(opObj)
 
-              await sendOperation(op);
+              const data = await sendOperation(op);
+
+              if(operation == "renew") {
+                if (data.ok) {
+                  console.log(colors.yellow(`Renovación realizada, nueva Fecha: ${new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7)).toLocaleDateString("es-CO")} `))
+                } else {
+                  console.log(colors.yellow("No se pudo realizar la renovación, error:"), colors.red(data.body))
+                }
+              }
 
               break;
             }
             case "reserve": {
               const book = JSON.parse(await searchForABook())
               opObj.book_id = book.book_id;
-              opObj.location = "BOG" // TODO: CAMBIAR!!!
+              opObj.location = process.env.SEDE!
               opObj.duration = await input({
                 message: "Duración de la reserva: ",
                 default: "2w",
