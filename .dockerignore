@@ -1,0 +1,4 @@
+node_modules/
+logs/
+bun.lock
+package-lock.json
