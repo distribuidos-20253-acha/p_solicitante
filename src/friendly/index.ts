@@ -8,6 +8,7 @@ import { sendOperation } from "../inputExecution/index.ts";
 import { InvalidOperationParamsError, OperationFactory, ParseOperationError } from "@acha/distribuidos/schemas/BibOperation";
 import colors from "chalk"
 import z from "zod";
+import stressTest from "../stress/stressTest.ts";
 
 const searchForABook = async () => {
   return await search({
@@ -55,6 +56,11 @@ export default async () => {
           value: "search",
           name: "Buscar un libro",
           description: "Busca un libro en la base de datos"
+        },
+        {
+          value: "stress",
+          name: "Prueba de estres",
+          description: "Envia MUCHAS peticiones"
         },
         {
           value: "exit",
@@ -158,7 +164,7 @@ export default async () => {
 
               const data = await sendOperation(op);
 
-              if(operation == "renew") {
+              if (operation == "renew") {
                 if (data.ok) {
                   console.log(colors.yellow(`Renovación realizada, nueva Fecha: ${new Date(new Date().getTime() + (1000 * 60 * 60 * 24 * 7)).toLocaleDateString("es-CO")} `))
                 } else {
@@ -216,6 +222,11 @@ export default async () => {
           }
         }
 
+        break;
+      }
+
+      case "stress": {
+        stressTest();
         break;
       }
       case "exit": {

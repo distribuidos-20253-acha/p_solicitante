@@ -2,26 +2,28 @@ import { program } from "commander";
 import friendly from "./src/friendly/index.ts";
 import { writeLog, showFigletTitle, Config } from "@acha/distribuidos"
 import readOperationsFile from "./src/inputExecution/readOperationsFile.ts";
+import stressTest from "./src/stress/stressTest.ts";
 const config = Config.getInstance();
 config.setVersion("0.1.15")
 
 program
   .option('-i, --input <file>')
   .option('-f, --friendly')
+  .option('-s, --stress')
   .option('-v, --verbose')
 
 program.showHelpAfterError(true)
 program.parse()
 
 const {
-  input: INPUT_FILE, friendly: IS_FRIENDLY, verbose: VERBOSE
+  input: INPUT_FILE, friendly: IS_FRIENDLY, verbose: VERBOSE, stress: IS_STRESS
 } = program.opts()
 
-if (IS_FRIENDLY && INPUT_FILE) {
+if (IS_FRIENDLY && INPUT_FILE || IS_FRIENDLY && IS_STRESS || INPUT_FILE && IS_STRESS) {
   console.error("You can use this program only friendly or with an input file, not the two options at the same.")
   program.help()
 }
-if (!IS_FRIENDLY && !INPUT_FILE) {
+if (!IS_FRIENDLY && !INPUT_FILE && !IS_STRESS) {
   console.error("Select at least one option")
   program.help()
 }
@@ -34,6 +36,11 @@ if (IS_FRIENDLY) {
   await writeLog("Friendly Mode")
   await writeLog("")
   friendly()
+}
+else if(IS_STRESS) {
+  await writeLog("Stress Mode")
+  await writeLog("")
+  await stressTest();
 }
 else {
   await writeLog("Input Mode")
